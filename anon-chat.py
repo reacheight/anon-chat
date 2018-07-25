@@ -39,9 +39,9 @@ def stop_command(message):
     user_state = chat.get_user_state(user)
 
     if user_state == UserStates.IN_CHAT:
-        pass
+        chat.stop_chat(user)
     elif user_state == UserStates.IN_QUEUE:
-        pass
+        chat.remove_from_queue(user)
     else:
         pass
 
