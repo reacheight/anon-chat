@@ -44,3 +44,6 @@ def stop_chat_command(message):
         pass
     else:
         pass
+
+
+bot.polling(none_stop=True)
