@@ -2,9 +2,10 @@ import telebot
 import config
 from user_states import UserStates
 from chat import Chat
+from communicator import Communicator
 
 bot = telebot.TeleBot(config.token)
-chat = Chat(bot)
+chat = Chat(Communicator(bot))
 
 
 @bot.message_handler(commands=['start'])

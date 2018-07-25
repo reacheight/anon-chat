@@ -3,8 +3,8 @@ from random import choice
 
 
 class Chat:
-    def __init__(self, bot):
-        self.bot = bot
+    def __init__(self, communicator):
+        self.communicator = communicator
         self.chat_table = {}
         self.chat_states = {}
         self.chat_queue = []
@@ -28,19 +28,19 @@ class Chat:
 
     def notify_about_chat(self, *users):
         for user in users:
-            self.bot.send_message(user, 'Собеседник найден! Начинайте общаться!')
+            self.communicator.send_text(user, 'Собеседник найден! Начинайте общаться!')
 
     def notify_about_queue(self, user):
-        self.bot.send_message(user, 'Вы добавлены в очередь. Ожидайте собеседника.')
+        self.communicator.send_text(user, 'Вы добавлены в очередь. Ожидайте собеседника.')
 
     def notify_about_interlocutor_stop_chat(self, user):
-        self.bot.send_message(user, 'Ваш собеседник прервал чат.')
+        self.communicator.send_text(user, 'Ваш собеседник прервал чат.')
 
     def notify_about_user_stop_chat(self, user):
-        self.bot.send_message(user, 'Вы прервали чат.')
+        self.communicator.send_text(user, 'Вы прервали чат.')
 
     def notify_about_user_leave_queue(self, user):
-        self.bot.send_message(user, 'Вы покинули очередь.')
+        self.communicator.send_text(user, 'Вы покинули очередь.')
 
     def get_interlocutor(self):
         interlocutor = choice(self.chat_queue)
@@ -64,7 +64,7 @@ class Chat:
 
     def send_message_to_interlocutor(self, user, message):
         interlocutor = self.chat_table[user]
-        self.bot.send_message(interlocutor, message)
+        self.communicator.send_text(interlocutor, message)
 
     def disconnect(self, user):
         interlocutor = self.chat_table[user]
