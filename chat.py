@@ -28,19 +28,19 @@ class Chat:
 
     def notify_about_chat(self, *users):
         for user in users:
-            self.communicator.send_text(user, 'Собеседник найден! Начинайте общаться!')
+            self.communicator.notify(user, 'Собеседник найден! Начинайте общаться!')
 
     def notify_about_queue(self, user):
-        self.communicator.send_text(user, 'Вы добавлены в очередь. Ожидайте собеседника.')
+        self.communicator.notify(user, 'Вы добавлены в очередь. Ожидайте собеседника.')
 
     def notify_about_interlocutor_stop_chat(self, user):
-        self.communicator.send_text(user, 'Ваш собеседник прервал чат.')
+        self.communicator.notify(user, 'Ваш собеседник прервал чат.')
 
     def notify_about_user_stop_chat(self, user):
-        self.communicator.send_text(user, 'Вы прервали чат.')
+        self.communicator.notify(user, 'Вы прервали чат.')
 
     def notify_about_user_leave_queue(self, user):
-        self.communicator.send_text(user, 'Вы покинули очередь.')
+        self.communicator.notify(user, 'Вы покинули очередь.')
 
     def get_interlocutor(self):
         interlocutor = choice(self.chat_queue)
@@ -63,8 +63,11 @@ class Chat:
             self.notify_about_queue(user)
 
     def send_message_to_interlocutor(self, user, message):
-        interlocutor = self.chat_table[user]
-        self.communicator.send_text(interlocutor, message)
+        user_state = self.get_user_state(user)
+
+        if user_state == UserStates.IN_CHAT:
+            interlocutor = self.chat_table[user]
+            self.communicator.send_message(interlocutor, message)
 
     def disconnect(self, user):
         interlocutor = self.chat_table[user]
@@ -89,10 +92,10 @@ class Chat:
         user_state = self.get_user_state(user)
 
         if user_state == UserStates.IN_CHAT:
-            # пишем что юзер уже в чате
+            # TODO пишем что юзер уже в чате
             pass
         elif user_state == UserStates.IN_QUEUE:
-            # пишем что юзер уже в очереди
+            # TODO пишем что юзер уже в очереди
             pass
         else:
             self.find_interlocutor(user)
@@ -105,5 +108,5 @@ class Chat:
         elif user_state == UserStates.IN_QUEUE:
             self.remove_from_queue(user)
         else:
-            # пишем что юзер не в чате и не в очереди
+            # TODO пишем что юзер не в чате и не в очереди
             pass

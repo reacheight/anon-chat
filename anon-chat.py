@@ -28,10 +28,7 @@ def stop_command(message):
 @bot.message_handler(content_types=['text'])
 def text_message(message):
     user = message.from_user.id
-    user_state = chat.get_user_state(user)
-
-    if user_state == UserStates.IN_CHAT:
-        chat.send_message_to_interlocutor(user, message.text)
+    chat.send_message_to_interlocutor(user, message)
 
 
 bot.polling(none_stop=True)
