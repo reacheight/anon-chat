@@ -1,6 +1,5 @@
 import telebot
 import config
-from user_states import UserStates
 from chat import Chat
 from communicator import Communicator
 
@@ -25,7 +24,8 @@ def stop_command(message):
     chat.stop(user)
 
 
-@bot.message_handler(content_types=['text'])
+@bot.message_handler(content_types=['text', 'audio', 'document', 'photo', 'sticker', 'video', 'voice', 'video_note',
+                                    'caption', 'location'])
 def text_message(message):
     user = message.from_user.id
     chat.send_message_to_interlocutor(user, message)
