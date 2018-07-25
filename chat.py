@@ -43,3 +43,7 @@ class Chat:
         else:
             self.chat_queue.append(user)
             self.notify_about_queue(user)
+
+    def send_message_to_interlocutor(self, user, message):
+        interlocutor = self.chat_table[user]
+        self.bot.send_message(interlocutor, message)
