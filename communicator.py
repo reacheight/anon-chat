@@ -1,9 +1,12 @@
+from string_formatting import *
+
+
 class Communicator:
     def __init__(self, bot):
         self.bot = bot
 
     def notify(self, user, text):
-        self.bot.send_message(user, text)
+        self.bot.send_message(user, italic(text), parse_mode='Markdown')
 
     def send_message(self, user, message):
         text = message.text
@@ -18,7 +21,7 @@ class Communicator:
         location = message.location
 
         if text:
-            self.bot.send_message(user, text)
+            self.bot.send_message(user, fold('Собеседник: ') + screen_markdown(text), parse_mode='Markdown')
         elif audio:
             self.bot.send_audio(user, audio.file_id, caption=caption)
         elif document:
