@@ -21,7 +21,7 @@ class Communicator:
         location = message.location
 
         if text:
-            self.bot.send_message(user, fold('Собеседник: ') + screen_markdown(text), parse_mode='Markdown')
+            self.bot.send_message(user, bold('Собеседник: ') + screen_markdown(text), parse_mode='Markdown')
         elif audio:
             self.bot.send_audio(user, audio.file_id, caption=caption)
         elif document:

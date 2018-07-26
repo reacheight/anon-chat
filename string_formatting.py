@@ -14,6 +14,9 @@ def italic(string):
     return '_' + string + '_'
 
 
-def fold(string):
+def bold(string):
     return '*' + string + '*'
 
+
+def code(string):
+    return '`' + string + '`'
