@@ -85,7 +85,7 @@ class Chat:
 
     def notify(self, text, *users):
         for user in users:
-            self.communicator.noftify(user, text)
+            self.communicator.notify(user, text)
 
     def get_user_state(self, user):
         return self.chat_states.get(user, UserStates.IN_MENU)
