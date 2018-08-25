@@ -1,12 +1,14 @@
 from user_states import UserStates
+from database import Database
 from random import choice
+import config
 
 
 class Chat:
     def __init__(self, communicator):
         self.communicator = communicator
-        self.chat_table = {}
-        self.chat_states = {}
+        self.chat_map = Database(config.chat_map_db_name)
+        self.chat_states = Database(config.chat_states_db_name)
         self.chat_queue = []
 
     def start(self, user):
@@ -33,7 +35,7 @@ class Chat:
         user_state = self.get_user_state(user)
 
         if user_state == UserStates.IN_CHAT:
-            interlocutor = self.chat_table[user]
+            interlocutor = self.chat_map[user]
             self.communicator.send_message(interlocutor, message)
 
     def find_interlocutor(self, user):
@@ -47,7 +49,7 @@ class Chat:
             self.notify('Вы добавлены в очередь. Ожидайте собеседника.', user)
 
     def stop_chat(self, user):
-        interlocutor = self.chat_table[user]
+        interlocutor = self.chat_map[user]
         self.disconnect(user)
         self.notify('Ваш собеседник прервал чат.', interlocutor)
         self.notify('Вы прервали чат.', user)
@@ -68,10 +70,10 @@ class Chat:
         self.add_to_table(first_user, second_user)
 
     def disconnect(self, user):
-        interlocutor = self.chat_table[user]
+        interlocutor = self.chat_map[user]
 
-        del self.chat_table[user]
-        del self.chat_table[interlocutor]
+        del self.chat_map[user]
+        del self.chat_map[interlocutor]
         del self.chat_states[user]
         del self.chat_states[interlocutor]
 
@@ -80,8 +82,8 @@ class Chat:
         self.chat_queue.append(user)
 
     def add_to_table(self, first_user, second_user):
-        self.chat_table[first_user] = second_user
-        self.chat_table[second_user] = first_user
+        self.chat_map[first_user] = second_user
+        self.chat_map[second_user] = first_user
 
     def notify(self, text, *users):
         for user in users:
