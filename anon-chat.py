@@ -24,6 +24,12 @@ def stop_command(message):
     chat.stop(user)
 
 
+@bot.message_handler(commands=['me'])
+def me_command(message):
+    user = message.from_user.id
+    chat.send_user_state(user)
+
+
 @bot.message_handler(content_types=['text', 'audio', 'document', 'photo', 'sticker', 'video', 'voice', 'video_note',
                                     'caption', 'location'])
 def text_message(message):

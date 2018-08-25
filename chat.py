@@ -92,3 +92,13 @@ class Chat:
 
     def interlocutor_is_ready(self):
         return len(self.chat_queue) > 0
+
+    def send_user_state(self, user):
+        user_state = self.get_user_state(user)
+
+        if user_state == UserStates.IN_MENU:
+            self.notify('Вы не ищете собеседника.', user)
+        elif user_state == UserStates.IN_QUEUE:
+            self.notify('Вы находитесь в очереди.', user)
+        else:
+            self.notify('Ваш собеседник найден.', user)
