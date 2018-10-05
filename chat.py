@@ -12,29 +12,29 @@ class Chat:
         self.chat_queue = []
 
     def start(self, user):
-        user_state = self.get_user_state(user)
+        user_state = self.chat_states[user]
 
-        if user_state == UserStates.IN_CHAT:
+        if user_state == UserStates.IN_CHAT.value:
             self.notify('Ваш собеседник уже найден.', user)
-        elif user_state == UserStates.IN_QUEUE:
+        elif user_state == UserStates.IN_QUEUE.value:
             self.notify('Вы уже находитесь в очереди.', user)
         else:
             self.find_interlocutor(user)
 
     def stop(self, user):
-        user_state = self.get_user_state(user)
+        user_state = self.chat_states[user]
 
-        if user_state == UserStates.IN_CHAT:
+        if user_state == UserStates.IN_CHAT.value:
             self.stop_chat(user)
-        elif user_state == UserStates.IN_QUEUE:
+        elif user_state == UserStates.IN_QUEUE.value:
             self.remove_from_queue(user)
         else:
             self.notify('Вы ещё не начали поиск собеседника.', user)
 
     def send_message_to_interlocutor(self, user, message):
-        user_state = self.get_user_state(user)
+        user_state = self.chat_states[user]
 
-        if user_state == UserStates.IN_CHAT:
+        if user_state == UserStates.IN_CHAT.value:
             interlocutor = self.chat_map[user]
             self.communicator.send_message(interlocutor, message)
 
@@ -66,7 +66,7 @@ class Chat:
         return interlocutor
 
     def connect(self, first_user, second_user):
-        self.chat_states[first_user] = self.chat_states[second_user] = UserStates.IN_CHAT
+        self.chat_states[first_user] = self.chat_states[second_user] = UserStates.IN_CHAT.value
         self.add_to_table(first_user, second_user)
 
     def disconnect(self, user):
@@ -78,7 +78,7 @@ class Chat:
         del self.chat_states[interlocutor]
 
     def add_to_queue(self, user):
-        self.chat_states[user] = UserStates.IN_QUEUE
+        self.chat_states[user] = UserStates.IN_QUEUE.value
         self.chat_queue.append(user)
 
     def add_to_table(self, first_user, second_user):
@@ -89,18 +89,15 @@ class Chat:
         for user in users:
             self.communicator.notify(user, text)
 
-    def get_user_state(self, user):
-        return self.chat_states.get(user, UserStates.IN_MENU)
-
     def interlocutor_is_ready(self):
         return len(self.chat_queue) > 0
 
     def send_user_state(self, user):
-        user_state = self.get_user_state(user)
+        user_state = self.chat_states[user]
 
-        if user_state == UserStates.IN_MENU:
+        if user_state == UserStates.IN_MENU.value:
             self.notify('Вы не ищете собеседника.', user)
-        elif user_state == UserStates.IN_QUEUE:
+        elif user_state == UserStates.IN_QUEUE.value:
             self.notify('Вы находитесь в очереди.', user)
         else:
             self.notify('Ваш собеседник найден.', user)

@@ -9,7 +9,7 @@ chat = Chat(Communicator(bot))
 
 @bot.message_handler(commands=['start'])
 def start_command(message):
-    pass
+    bot.send_message(message, "Добро пожаловать!")
 
 
 @bot.message_handler(commands=['start_chat'])
